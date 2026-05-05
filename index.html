@@ -232,6 +232,8 @@
           max-height: 92dvh;
           transform: translateY(100%);
           opacity: 1;
+          display: flex; /* AJOUTÉ */
+          flex-direction: column; /* AJOUTÉ */
           padding-bottom: var(--sab);
           transition: transform 0.38s cubic-bezier(0.32, 1, 0.46, 1);
         }
@@ -821,10 +823,33 @@
       if (window.visualViewport) {
         window.visualViewport.addEventListener("resize", () => {
           if (!isMobile() || !panel.classList.contains("open")) return;
-          const kb = window.innerHeight - window.visualViewport.height;
-          panel.classList.add("keyboard-up");
-          panel.style.transform =
-            kb > 60 ? `translateY(-${kb}px)` : "translateY(0)";
+
+          const viewportHeight = window.visualViewport.height;
+          const windowHeight = window.innerHeight;
+          const keyboardHeight = windowHeight - viewportHeight;
+
+          if (keyboardHeight > 60) {
+            // Au lieu de monter tout le bloc, on le "tasse" entre le titre et le clavier
+            panel.classList.add("keyboard-up");
+            panel.style.transform = "translateY(0)"; // On annule le mouvement vers le haut
+            panel.style.bottom = `${keyboardHeight}px`;
+            panel.style.maxHeight = `${viewportHeight}px`;
+
+            // On centre l'input actif pour qu'il soit bien visible
+            setTimeout(() => {
+              if (document.activeElement) {
+                document.activeElement.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }
+            }, 150);
+          } else {
+            // Reset quand le clavier se ferme
+            panel.style.bottom = "0";
+            panel.style.maxHeight = "92dvh";
+            panel.classList.remove("keyboard-up");
+          }
         });
       }
 
@@ -837,7 +862,7 @@
           nameEl.classList.add("error");
           ok = false;
         }
-        // Strip spaces, dashes, dots then check digit count
+
         const digits = phoneEl.value.replace(/[\s\-.]/g, "");
         if (!/^(\+?\d{7,15})$/.test(digits)) {
           phoneEl.classList.add("error");
@@ -859,29 +884,17 @@
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // FIX #2a — honeypot check
-        if (hpInput.value) {
-          console.warn("Bot detected (honeypot).");
-          return;
-        }
+        if (hpInput.value) return;
 
-        // FIX #2b — minimum time check
-        if (Date.now() - formOpenedAt < MIN_FILL_MS) {
-          console.warn("Bot detected (too fast).");
-          return;
-        }
+        if (Date.now() - formOpenedAt < MIN_FILL_MS) return;
 
         if (!validate()) return;
 
-        // Loading state
         btnSubmit.innerHTML = '<div class="spinner"></div>';
         btnSubmit.disabled = true;
 
-        // ↓ Replace with your real fetch() call
-        // e.g.: await fetch('/api/lead', { method:'POST', body: new FormData(form) });
         await new Promise((r) => setTimeout(r, 1400));
 
-        // Show success
         form.style.display = "none";
         panelNote.style.display = "none";
         successView.classList.add("visible");
