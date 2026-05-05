@@ -45,7 +45,7 @@
         overflow: hidden;
       }
 
-      /* LE FOND DE DÉMO QUE TU AVAIS */
+      /* LE FOND DE DÉMO */
       .demo-bg {
         position: fixed;
         inset: 0;
@@ -94,14 +94,13 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       }
 
-      /* ── AJUSTEMENT IPHONE 5/4 POUR LE PANEL ── */
+      /* PANEL */
       #panel {
         position: fixed;
         bottom: calc(85px + var(--sab));
         right: 20px;
         width: 360px;
         max-width: calc(100vw - 40px);
-        /* CORRECTIF : Empêche de dépasser en haut sur iPhone 4/5 */
         max-height: calc(100vh - 110px - var(--sat));
         background: var(--surface);
         border-radius: var(--radius);
@@ -122,7 +121,7 @@
         pointer-events: all;
       }
 
-      /* TON HEADER COMPLET (Avec les ronds et les effets) */
+      /* HEADER */
       .panel-header {
         background: var(--ink);
         padding: 24px 20px 18px;
@@ -190,30 +189,36 @@
         z-index: 1;
       }
 
-      /* ── CORRECTIF : SCROLLBAR VISIBLE ── */
+      /* ── FORCE L'AFFICHAGE DE LA SCROLLBAR ── */
       .panel-scrollable {
-        overflow-y: scroll;
+        overflow-y: scroll !important; /* Force l'apparition du mécanisme */
         flex: 1;
         -webkit-overflow-scrolling: touch;
       }
-      /* Styles pour forcer l'affichage de la barre */
+
+      /* Style ultra-visible pour Webkit (Chrome/Safari/iOS) */
       .panel-scrollable::-webkit-scrollbar {
-        width: 6px;
-        display: block;
+        -webkit-appearance: none;
+        width: 8px !important; /* Un peu plus large pour être vue */
+        display: block !important;
       }
+
       .panel-scrollable::-webkit-scrollbar-track {
-        background: #f9f9f9;
+        background: #f1f1f1 !important;
+        border-left: 1px solid var(--border);
       }
+
       .panel-scrollable::-webkit-scrollbar-thumb {
-        background: #d1d5db;
-        border-radius: 10px;
+        background-color: var(--ink-soft) !important;
+        border-radius: 10px !important;
+        border: 2px solid #f1f1f1 !important; /* Crée un effet de décollage */
       }
 
       .panel-body {
         padding: 20px;
       }
 
-      /* TES CHAMPS DE FORMULAIRE */
+      /* CHAMPS */
       .field {
         margin-bottom: 14px;
       }
@@ -246,7 +251,7 @@
         background: #fffcfc;
       }
 
-      /* TON BOUTON INITIAL AVEC L'AVION */
+      /* BOUTON */
       .btn-submit {
         width: 100%;
         height: 54px;
@@ -280,7 +285,7 @@
         gap: 5px;
       }
 
-      /* TON ÉCRAN DE SUCCÈS COMPLET */
+      /* SUCCÈS */
       .success-view {
         display: none;
         padding: 40px 20px;
@@ -290,7 +295,7 @@
         display: block;
       }
 
-      /* ── CORRECTIF : TASSEMENT SI L'ÉCRAN EST MINUSCULE ── */
+      /* TASSEMENT ÉCRAN MINUSCULE */
       @media (max-height: 580px) {
         .panel-header {
           padding: 16px 20px 10px;
@@ -318,7 +323,7 @@
     <div class="demo-bg"></div>
     <div class="demo-label">
       <span>DevisRapide.fr</span>
-      <p>Appuyez sur le bouton pour tester la démo →</p>
+      <p>Appuyez sur le bouton →</p>
     </div>
 
     <button id="fab">
@@ -368,8 +373,7 @@
               <i class="fa-solid fa-paper-plane"></i> Envoyer ma demande
             </button>
             <div class="footer-trust">
-              <i class="fa-solid fa-lock"></i> Données sécurisées — jamais
-              revendues
+              <i class="fa-solid fa-lock"></i> Données sécurisées
             </div>
           </div>
         </form>
@@ -395,7 +399,6 @@
     </div>
 
     <script>
-      /* TOUT TON JAVASCRIPT INITIAL */
       const panel = document.getElementById("panel");
       const form = document.getElementById("lead-form");
       const scrollable = document.querySelector(".panel-scrollable");
@@ -417,17 +420,13 @@
         });
 
         if (!isValid) return;
-
         const btn = document.getElementById("btn-submit");
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
-
         await new Promise((r) => setTimeout(r, 1000));
-
         form.style.display = "none";
         document.getElementById("success-view").classList.add("visible");
       };
 
-      // Garder le bouton visible quand le clavier sort
       if (window.visualViewport) {
         window.visualViewport.onresize = () => {
           if (!panel.classList.contains("open")) return;
