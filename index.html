@@ -6,11 +6,16 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>Widget Devis - Démo</title>
+    <title>Widget Devis Premium Compact</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
       rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
     <style>
@@ -22,14 +27,12 @@
         padding: 0;
       }
       :root {
-        --ink: #0f1117;
-        --ink-soft: #5a5f72;
+        --ink: #111318;
+        --ink-soft: #8e93a6;
         --surface: #ffffff;
-        --border: #e8eaef;
-        --accent: #1a56e8;
-        --accent-h: #1344c4;
-        --error: #dc2626;
-        --radius: 16px;
+        --border: #eef0f5;
+        --accent: #1d58f2;
+        --radius: 24px;
         --sab: env(safe-area-inset-bottom, 0px);
       }
 
@@ -37,13 +40,9 @@
         font-family: "DM Sans", sans-serif;
         background: #f3f4f8;
         min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow-x: hidden;
       }
 
-      /* ── ÉLÉMENTS DE DÉMO (STYLE IMAGE) ──────────────── */
+      /* ── ARRIÈRE-PLAN DÉMO ── */
       .demo-bg {
         position: fixed;
         inset: 0;
@@ -51,8 +50,12 @@
         z-index: -1;
       }
       .demo-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         text-align: center;
-        padding: 20px;
+        width: 100%;
       }
       .demo-label span {
         display: block;
@@ -61,7 +64,6 @@
         text-transform: uppercase;
         color: var(--ink-soft);
         margin-bottom: 8px;
-        font-weight: 500;
       }
       .demo-label p {
         font-family: "Instrument Serif", serif;
@@ -70,7 +72,7 @@
         line-height: 1.2;
       }
 
-      /* ── FAB ─────────────────────────────────────── */
+      /* ── FAB ── */
       #fab {
         position: fixed;
         bottom: calc(24px + var(--sab));
@@ -85,72 +87,109 @@
         align-items: center;
         justify-content: center;
         z-index: 1000;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       }
 
-      /* ── Panel ───────────────────────────────────── */
+      /* ── PANEL "FLOATING CARD" ── */
       #panel {
         position: fixed;
         bottom: calc(100px + var(--sab));
         right: 24px;
-        width: 360px;
+        width: 370px;
+        max-width: calc(100vw - 40px);
         background: var(--surface);
         border-radius: var(--radius);
-        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
         z-index: 999;
         display: flex;
         flex-direction: column;
         overflow: hidden;
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(20px) scale(0.95);
         pointer-events: none;
-        transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-origin: bottom right;
       }
       #panel.open {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         pointer-events: all;
       }
 
-      @media (max-width: 600px) {
-        #panel {
-          bottom: 0;
-          right: 0;
-          left: 0;
-          width: 100%;
-          border-radius: 24px 24px 0 0;
-          max-height: 92dvh;
-          transform: translateY(100%);
-          opacity: 1;
-          transition: transform 0.3s ease;
-        }
-        #panel.open {
-          transform: translateY(0);
-        }
-      }
-
+      /* Header avec les ronds et badge */
       .panel-header {
         background: var(--ink);
-        padding: 24px;
+        padding: 32px 24px 24px;
         color: #fff;
+        position: relative;
+        overflow: hidden;
         flex-shrink: 0;
       }
+      .panel-header::before,
+      .panel-header::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.12;
+      }
+      .panel-header::before {
+        width: 120px;
+        height: 120px;
+        background: var(--accent);
+        top: -40px;
+        right: -30px;
+      }
+      .panel-header::after {
+        width: 80px;
+        height: 80px;
+        background: #fff;
+        bottom: -30px;
+        left: 20px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.08);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 1;
+      }
+      .badge i {
+        color: #22c55e;
+        margin-right: 6px;
+        font-size: 8px;
+      }
+
       .panel-header h2 {
         font-family: "Instrument Serif", serif;
-        font-size: 26px;
-        line-height: 1.1;
+        font-size: 32px;
+        line-height: 1;
         font-weight: 400;
+        margin-bottom: 6px;
+        position: relative;
+        z-index: 1;
       }
       .panel-header p {
         font-size: 14px;
-        opacity: 0.7;
-        margin-top: 4px;
+        color: var(--ink-soft);
+        position: relative;
+        z-index: 1;
       }
 
+      /* Corps du formulaire */
       .panel-scrollable {
         overflow-y: auto;
         flex: 1;
         -webkit-overflow-scrolling: touch;
+        max-height: 65vh;
       }
       .panel-body {
         padding: 24px;
@@ -158,67 +197,75 @@
 
       .field {
         margin-bottom: 18px;
-        position: relative;
       }
       .field label {
         display: block;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
         color: var(--ink-soft);
         margin-bottom: 6px;
+        letter-spacing: 0.5px;
       }
       .field input,
       .field select {
         width: 100%;
-        height: 50px;
-        padding: 0 14px;
-        border: 1.5px solid var(--border);
-        border-radius: 12px;
+        height: 54px;
+        padding: 0 16px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
         font-size: 16px;
         font-family: inherit;
         background: #fafbfc;
         outline: none;
-        transition: all 0.2s;
+        transition: 0.2s;
       }
-      .field input:focus,
-      .field select:focus {
+      .field input:focus {
         border-color: var(--accent);
         background: #fff;
       }
-
-      .error-msg {
-        color: var(--error);
-        font-size: 12px;
-        margin-top: 5px;
-        display: none;
-      }
-      .field.has-error input,
-      .field.has-error select {
-        border-color: var(--error);
-        background: #fff5f5;
-      }
-      .field.has-error .error-msg {
-        display: block;
+      .field.has-error input {
+        border-color: #dc2626;
+        background: #fffcfc;
       }
 
+      /* Bouton avec icône avion */
       .btn-submit {
         width: 100%;
-        height: 54px;
+        height: 58px;
         background: var(--accent);
         color: #fff;
         border: none;
-        border-radius: 12px;
-        font-weight: 600;
+        border-radius: 14px;
+        font-weight: 700;
         font-size: 16px;
         cursor: pointer;
-        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 6px 16px rgba(29, 88, 242, 0.2);
+        margin-top: 8px;
+      }
+      .btn-submit i {
+        transform: rotate(-15deg);
+        font-size: 18px;
+      }
+
+      /* Footer réassurance */
+      .footer-trust {
+        text-align: center;
+        color: var(--ink-soft);
+        font-size: 12px;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
       }
 
       .success-view {
         display: none;
-        padding: 50px 24px;
+        padding: 50px 20px;
         text-align: center;
       }
       .success-view.visible {
@@ -241,8 +288,6 @@
         fill="none"
         stroke="white"
         stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
       >
         <path
           d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
@@ -252,123 +297,114 @@
 
     <div id="panel">
       <div class="panel-header">
+        <div class="badge">
+          <i class="fa-solid fa-circle"></i> Réponse rapide
+        </div>
         <h2>Recevez un devis<br /><em>en 2 minutes</em></h2>
-        <p>Gratuit &amp; sans engagement</p>
+        <p>Gratuit & sans engagement</p>
       </div>
 
       <div class="panel-scrollable">
         <form id="lead-form" novalidate>
           <div class="panel-body">
             <div class="field">
-              <label for="f-name">Votre nom</label>
-              <input id="f-name" type="text" placeholder="Jean Dupont" />
-              <span class="error-msg">Veuillez entrer votre nom.</span>
+              <label>VOTRE NOM</label>
+              <input type="text" id="f-name" placeholder="Jean Dupont" />
             </div>
 
             <div class="field">
-              <label for="f-phone">Téléphone</label>
-              <input id="f-phone" type="tel" placeholder="06 12 34 56 78" />
-              <span class="error-msg">Numéro de téléphone invalide.</span>
+              <label>TÉLÉPHONE</label>
+              <input type="tel" id="f-phone" placeholder="06 12 34 56 78" />
             </div>
 
             <div class="field">
-              <label for="f-type">Type de travaux</label>
+              <label>TYPE DE TRAVAUX</label>
               <select id="f-type">
-                <option value="" disabled selected>Sélectionner…</option>
-                <option value="plomberie">🔧 Plomberie</option>
-                <option value="chauffage">🔥 Chauffage</option>
+                <option value="" disabled selected>Sélectionner...</option>
+                <option>🔧 Plomberie</option>
+                <option>🔥 Chauffage</option>
               </select>
-              <span class="error-msg"
-                >Veuillez choisir un type de travaux.</span
-              >
             </div>
 
             <button type="submit" class="btn-submit" id="btn-submit">
-              Envoyer ma demande
+              <i class="fa-solid fa-paper-plane"></i> Envoyer ma demande
             </button>
+
+            <div class="footer-trust">
+              <i class="fa-solid fa-lock"></i> Données sécurisées — jamais
+              revendues
+            </div>
           </div>
         </form>
 
         <div class="success-view" id="success-view">
+          <i
+            class="fa-solid fa-circle-check"
+            style="color: #22c55e; font-size: 40px; margin-bottom: 16px"
+          ></i>
           <h3
             style="
               font-family: &quot;Instrument Serif&quot;, serif;
-              font-size: 28px;
+              font-size: 32px;
             "
           >
             Merci !
           </h3>
           <p style="margin-top: 10px; color: var(--ink-soft)">
-            Un conseiller vous rappelle d'ici quelques instants.
+            Un conseiller vous rappelle d'ici 2 min.
           </p>
         </div>
       </div>
     </div>
 
     <script>
-      const fab = document.getElementById("fab");
       const panel = document.getElementById("panel");
       const form = document.getElementById("lead-form");
       const scrollable = document.querySelector(".panel-scrollable");
 
-      fab.addEventListener("click", () => {
+      document.getElementById("fab").onclick = () =>
         panel.classList.toggle("open");
-      });
 
-      function validate() {
+      form.onsubmit = async (e) => {
+        e.preventDefault();
         let isValid = true;
-        const name = document.getElementById("f-name");
-        const phone = document.getElementById("f-phone");
-        const type = document.getElementById("f-type");
-
-        document
-          .querySelectorAll(".field")
-          .forEach((f) => f.classList.remove("has-error"));
-
-        if (name.value.trim().length < 2) {
-          name.closest(".field").classList.add("has-error");
-          isValid = false;
-        }
-        if (!/^\d{10,}$/.test(phone.value.replace(/[\s\-.+]/g, ""))) {
-          phone.closest(".field").classList.add("has-error");
-          isValid = false;
-        }
-        if (!type.value) {
-          type.closest(".field").classList.add("has-error");
-          isValid = false;
-        }
-        return isValid;
-      }
-
-      if (window.visualViewport) {
-        window.visualViewport.addEventListener("resize", () => {
-          if (window.innerWidth > 600 || !panel.classList.contains("open"))
-            return;
-          const vh = window.visualViewport.height;
-          const isKeyboardUp = window.innerHeight - vh > 60;
-
-          if (isKeyboardUp) {
-            scrollable.style.paddingBottom = "60vh";
-            setTimeout(() => {
-              document.activeElement?.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-              });
-            }, 100);
+        form.querySelectorAll(".field").forEach((f) => {
+          const input = f.querySelector("input, select");
+          if (!input.value.trim()) {
+            f.classList.add("has-error");
+            isValid = false;
           } else {
-            scrollable.style.paddingBottom = "0";
+            f.classList.remove("has-error");
           }
         });
-      }
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        if (!validate()) return;
-        document.getElementById("btn-submit").innerText = "Envoi...";
+        if (!isValid) return;
+
+        const btn = document.getElementById("btn-submit");
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
+
         await new Promise((r) => setTimeout(r, 1200));
         form.style.display = "none";
         document.getElementById("success-view").classList.add("visible");
-      });
+      };
+
+      // Fix clavier intelligent
+      if (window.visualViewport) {
+        window.visualViewport.onresize = () => {
+          if (!panel.classList.contains("open")) return;
+          const isUp = window.innerHeight - window.visualViewport.height > 60;
+          scrollable.style.paddingBottom = isUp ? "60vh" : "0";
+          if (isUp)
+            setTimeout(
+              () =>
+                document.activeElement?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                }),
+              50,
+            );
+        };
+      }
     </script>
   </body>
 </html>
