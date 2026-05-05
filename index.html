@@ -33,13 +33,14 @@
         --border: #eef0f5;
         --accent: #1d58f2;
         --radius: 24px;
+        --sat: env(safe-area-inset-top, 0px);
         --sab: env(safe-area-inset-bottom, 0px);
       }
 
       body {
         font-family: "DM Sans", sans-serif;
         background: #f3f4f8;
-        min-height: 100vh;
+        height: 100vh;
         overflow: hidden;
       }
 
@@ -92,13 +93,14 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       }
 
-      /* ── PANEL ── */
+      /* ── PANEL (Adapté image_e72d98.png) ── */
       #panel {
         position: fixed;
         bottom: calc(85px + var(--sab));
         right: 20px;
-        width: 340px; /* Légèrement réduit pour iPhone 5 */
+        width: 335px;
         max-width: calc(100vw - 40px);
+        max-height: calc(100vh - 110px - var(--sat));
         background: var(--surface);
         border-radius: var(--radius);
         box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
@@ -118,10 +120,10 @@
         pointer-events: all;
       }
 
-      /* HEADER AVEC TOUS LES RONDS */
+      /* HEADER COMPLET */
       .panel-header {
         background: var(--ink);
-        padding: 22px 20px 16px; /* Padding optimisé */
+        padding: 22px 20px 16px;
         color: #fff;
         position: relative;
         overflow: hidden;
@@ -159,7 +161,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         border: 1px solid rgba(255, 255, 255, 0.1);
         position: relative;
         z-index: 1;
@@ -172,7 +174,7 @@
 
       .panel-header h2 {
         font-family: "Instrument Serif", serif;
-        font-size: 26px; /* Légèrement réduit pour la visibilité */
+        font-size: 26px;
         line-height: 1.1;
         font-weight: 400;
         margin-bottom: 4px;
@@ -186,19 +188,18 @@
         z-index: 1;
       }
 
-      /* SCROLLABLE */
+      /* CORPS ET FORMULAIRE */
       .panel-scrollable {
         overflow-y: auto;
         flex: 1;
         -webkit-overflow-scrolling: touch;
-        max-height: 65vh; /* Ajusté pour iPhone 5 */
       }
       .panel-body {
-        padding: 18px 20px;
+        padding: 20px;
       }
 
       .field {
-        margin-bottom: 12px;
+        margin-bottom: 14px;
       }
       .field label {
         display: block;
@@ -211,7 +212,7 @@
       .field input,
       .field select {
         width: 100%;
-        height: 44px; /* Un peu plus compact */
+        height: 46px;
         padding: 0 14px;
         border: 1px solid var(--border);
         border-radius: 12px;
@@ -219,20 +220,22 @@
         font-family: inherit;
         background: #fafbfc;
         outline: none;
+        transition: 0.2s;
       }
       .field input:focus {
         border-color: var(--accent);
         background: #fff;
       }
-      .field.has-error input {
+      .field.has-error input,
+      .field.has-error select {
         border-color: #dc2626;
         background: #fffcfc;
       }
 
-      /* BOUTON AVEC ROTATION AVION */
+      /* BOUTON AVEC AVION */
       .btn-submit {
         width: 100%;
-        height: 50px;
+        height: 52px;
         background: var(--accent);
         color: #fff;
         border: none;
@@ -250,13 +253,17 @@
       .btn-submit i {
         transform: rotate(-15deg);
         font-size: 16px;
+        transition: 0.3s;
+      }
+      .btn-submit:active i {
+        transform: rotate(0deg) scale(1.2);
       }
 
       .footer-trust {
         text-align: center;
         color: var(--ink-soft);
         font-size: 11px;
-        margin-top: 12px;
+        margin-top: 15px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -270,6 +277,37 @@
       }
       .success-view.visible {
         display: block;
+        animation: fadeIn 0.4s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* OPTIMISATION ÉCRANS COURTS */
+      @media (max-height: 600px) {
+        .panel-header {
+          padding: 15px 20px 10px;
+        }
+        .panel-header h2 {
+          font-size: 22px;
+        }
+        .badge {
+          margin-bottom: 6px;
+        }
+        .field {
+          margin-bottom: 10px;
+        }
+        .panel-body {
+          padding: 15px 20px;
+        }
       }
     </style>
   </head>
@@ -277,7 +315,7 @@
     <div class="demo-bg"></div>
     <div class="demo-label">
       <span>DevisRapide.fr</span>
-      <p>Testez le widget en bas à droite</p>
+      <p>Widget Premium Démo</p>
     </div>
 
     <button id="fab">
@@ -309,27 +347,33 @@
           <div class="panel-body">
             <div class="field">
               <label>VOTRE NOM</label>
-              <input type="text" id="f-name" placeholder="Jean Dupont" />
+              <input
+                type="text"
+                id="f-name"
+                placeholder="Jean Dupont"
+                required
+              />
             </div>
-
             <div class="field">
               <label>TÉLÉPHONE</label>
-              <input type="tel" id="f-phone" placeholder="06 12 34 56 78" />
+              <input
+                type="tel"
+                id="f-phone"
+                placeholder="06 12 34 56 78"
+                required
+              />
             </div>
-
             <div class="field">
               <label>TYPE DE TRAVAUX</label>
-              <select id="f-type">
+              <select id="f-type" required>
                 <option value="" disabled selected>Sélectionner...</option>
                 <option>🔧 Plomberie</option>
                 <option>🔥 Chauffage</option>
               </select>
             </div>
-
             <button type="submit" class="btn-submit" id="btn-submit">
               <i class="fa-solid fa-paper-plane"></i> Envoyer ma demande
             </button>
-
             <div class="footer-trust">
               <i class="fa-solid fa-lock"></i> Données sécurisées
             </div>
@@ -359,17 +403,22 @@
     <script>
       const panel = document.getElementById("panel");
       const form = document.getElementById("lead-form");
+      const fab = document.getElementById("fab");
       const scrollable = document.querySelector(".panel-scrollable");
 
-      document.getElementById("fab").onclick = () =>
-        panel.classList.toggle("open");
+      fab.onclick = () => panel.classList.toggle("open");
 
       form.onsubmit = async (e) => {
         e.preventDefault();
         let isValid = true;
+
+        // Validation complète
         form.querySelectorAll(".field").forEach((f) => {
           const input = f.querySelector("input, select");
-          if (!input.value.trim()) {
+          if (
+            !input.value.trim() ||
+            (input.tagName === "SELECT" && input.selectedIndex === 0)
+          ) {
             f.classList.add("has-error");
             isValid = false;
           } else {
@@ -378,25 +427,32 @@
         });
 
         if (!isValid) return;
+
         const btn = document.getElementById("btn-submit");
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
-        await new Promise((r) => setTimeout(r, 1000));
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> Envoi en cours...';
+
+        // Simulation d'envoi
+        await new Promise((r) => setTimeout(r, 1200));
+
         form.style.display = "none";
         document.getElementById("success-view").classList.add("visible");
       };
 
-      // Gestion du clavier mobile pour iPhone 5/SE
+      // Gestion intelligente du clavier pour les petits écrans
       if (window.visualViewport) {
         window.visualViewport.onresize = () => {
           if (!panel.classList.contains("open")) return;
-          const isUp = window.innerHeight - window.visualViewport.height > 60;
-          scrollable.style.paddingBottom = isUp ? "50vh" : "0";
-          if (isUp)
+          const isUp = window.innerHeight - window.visualViewport.height > 80;
+          scrollable.style.paddingBottom = isUp ? "60vh" : "0";
+          if (isUp) {
             setTimeout(() => {
               document
                 .getElementById("btn-submit")
                 .scrollIntoView({ behavior: "smooth", block: "end" });
             }, 50);
+          }
         };
       }
     </script>
