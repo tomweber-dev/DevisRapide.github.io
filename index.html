@@ -827,30 +827,34 @@
           const viewportHeight = window.visualViewport.height;
           const windowHeight = window.innerHeight;
           const keyboardHeight = windowHeight - viewportHeight;
+          const scrollContainer = panel.querySelector(".panel-scrollable");
 
           if (keyboardHeight > 60) {
             panel.classList.add("keyboard-up");
             panel.style.transform = "translateY(0)";
-
-            // On retire le padding-bottom pour coller au clavier
-            panel.style.paddingBottom = "0px";
             panel.style.bottom = `${keyboardHeight}px`;
             panel.style.maxHeight = `${viewportHeight}px`;
+            panel.style.paddingBottom = "0px";
 
-            // On utilise 'end' au lieu de 'center' pour coller l'input au clavier
+            // Ajoute un espace en bas du formulaire pour permettre de scroller le 2ème input
+            // On crée un padding interne à la zone scrollable
+            scrollContainer.style.paddingBottom = "200px";
+
             setTimeout(() => {
               if (document.activeElement) {
+                // 'center' est plus fiable ici pour forcer le scroll avec le padding ajouté
                 document.activeElement.scrollIntoView({
                   behavior: "smooth",
-                  block: "end",
+                  block: "center",
                 });
               }
-            }, 100);
+            }, 150);
           } else {
-            // Reset aux valeurs d'origine
+            // Reset complet
             panel.style.bottom = "0";
-            panel.style.paddingBottom = "var(--sab)";
             panel.style.maxHeight = "92dvh";
+            panel.style.paddingBottom = "var(--sab)";
+            scrollContainer.style.paddingBottom = "0px";
             panel.classList.remove("keyboard-up");
           }
         });
