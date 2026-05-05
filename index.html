@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>Widget Devis Premium Compact</title>
+    <title>Widget Devis Premium</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -92,12 +92,12 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       }
 
-      /* ── PANEL COMPACT ── */
+      /* ── PANEL ── */
       #panel {
         position: fixed;
         bottom: calc(85px + var(--sab));
         right: 20px;
-        width: 360px;
+        width: 340px; /* Légèrement réduit pour iPhone 5 */
         max-width: calc(100vw - 40px);
         background: var(--surface);
         border-radius: var(--radius);
@@ -118,10 +118,10 @@
         pointer-events: all;
       }
 
-      /* Header Optimisé (Plus fin) */
+      /* HEADER AVEC TOUS LES RONDS */
       .panel-header {
         background: var(--ink);
-        padding: 24px 20px 18px;
+        padding: 22px 20px 16px; /* Padding optimisé */
         color: #fff;
         position: relative;
         overflow: hidden;
@@ -159,7 +159,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         border: 1px solid rgba(255, 255, 255, 0.1);
         position: relative;
         z-index: 1;
@@ -172,7 +172,7 @@
 
       .panel-header h2 {
         font-family: "Instrument Serif", serif;
-        font-size: 28px;
+        font-size: 26px; /* Légèrement réduit pour la visibilité */
         line-height: 1.1;
         font-weight: 400;
         margin-bottom: 4px;
@@ -186,19 +186,19 @@
         z-index: 1;
       }
 
-      /* Formulaire resserré */
+      /* SCROLLABLE */
       .panel-scrollable {
         overflow-y: auto;
         flex: 1;
         -webkit-overflow-scrolling: touch;
-        max-height: 70vh;
+        max-height: 65vh; /* Ajusté pour iPhone 5 */
       }
       .panel-body {
-        padding: 20px;
+        padding: 18px 20px;
       }
 
       .field {
-        margin-bottom: 14px;
+        margin-bottom: 12px;
       }
       .field label {
         display: block;
@@ -211,7 +211,7 @@
       .field input,
       .field select {
         width: 100%;
-        height: 48px;
+        height: 44px; /* Un peu plus compact */
         padding: 0 14px;
         border: 1px solid var(--border);
         border-radius: 12px;
@@ -229,10 +229,10 @@
         background: #fffcfc;
       }
 
-      /* Bouton */
+      /* BOUTON AVEC ROTATION AVION */
       .btn-submit {
         width: 100%;
-        height: 54px;
+        height: 50px;
         background: var(--accent);
         color: #fff;
         border: none;
@@ -256,7 +256,7 @@
         text-align: center;
         color: var(--ink-soft);
         font-size: 11px;
-        margin-top: 15px;
+        margin-top: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -277,7 +277,7 @@
     <div class="demo-bg"></div>
     <div class="demo-label">
       <span>DevisRapide.fr</span>
-      <p>Appuyez sur le bouton pour tester la démo →</p>
+      <p>Testez le widget en bas à droite</p>
     </div>
 
     <button id="fab">
@@ -385,6 +385,7 @@
         document.getElementById("success-view").classList.add("visible");
       };
 
+      // Gestion du clavier mobile pour iPhone 5/SE
       if (window.visualViewport) {
         window.visualViewport.onresize = () => {
           if (!panel.classList.contains("open")) return;
