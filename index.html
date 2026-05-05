@@ -6,9 +6,9 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>Widget Devis Premium</title>
+    <title>Widget Devis Premium Compact</title>
 
-    <!-- Polices rétablies à l'identique -->
+    <!-- Tes essentiels : Polices complètes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
@@ -46,7 +46,7 @@
         overflow: hidden;
       }
 
-      /* FOND ET LABELS DE DÉMO */
+      /* Tes essentiels : Fond dégradé et texte centre */
       .demo-bg {
         position: fixed;
         inset: 0;
@@ -60,6 +60,7 @@
         transform: translate(-50%, -50%);
         text-align: center;
         width: 100%;
+        padding: 20px;
       }
       .demo-label span {
         display: block;
@@ -73,9 +74,10 @@
         font-family: "Instrument Serif", serif;
         font-size: clamp(24px, 5vw, 32px);
         color: var(--ink);
+        line-height: 1.2;
       }
 
-      /* BOUTON FAB */
+      /* Tes essentiels : FAB */
       #fab {
         position: fixed;
         bottom: calc(20px + var(--sab));
@@ -93,13 +95,15 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       }
 
-      /* PANEL */
+      /* Tes essentiels : Panel avec correction iPhone 4/5 */
       #panel {
         position: fixed;
         bottom: calc(85px + var(--sab));
         right: 20px;
         width: 360px;
-        max-width: calc(100vw - 40px);
+        max-width: calc(
+          100vw - 40px
+        ); /* S'adapte si l'écran fait moins de 360px */
         max-height: calc(100vh - 110px - var(--sat));
         background: var(--surface);
         border-radius: var(--radius);
@@ -120,13 +124,14 @@
         pointer-events: all;
       }
 
-      /* HEADER */
+      /* Tes essentiels : Header avec cercles décoratifs (::before/::after) */
       .panel-header {
         background: var(--ink);
         padding: 24px 20px 18px;
         color: #fff;
         position: relative;
         overflow: hidden;
+        flex-shrink: 0;
       }
       .panel-header::before,
       .panel-header::after {
@@ -173,6 +178,7 @@
       .panel-header h2 {
         font-family: "Instrument Serif", serif;
         font-size: 28px;
+        line-height: 1.1;
         font-weight: 400;
         position: relative;
         z-index: 1;
@@ -184,7 +190,7 @@
         z-index: 1;
       }
 
-      /* BODY */
+      /* Scrollbar discrète mais fonctionnelle */
       .panel-scrollable {
         overflow-y: auto;
         flex: 1;
@@ -194,6 +200,7 @@
         padding: 20px;
       }
 
+      /* Tes essentiels : Champs et Design */
       .field {
         margin-bottom: 14px;
       }
@@ -215,6 +222,11 @@
         font-family: inherit;
         background: #fafbfc;
         outline: none;
+        transition: border-color 0.2s;
+      }
+      .field input:focus {
+        border-color: var(--accent);
+        background: #fff;
       }
       .field.has-error input {
         border-color: #dc2626;
@@ -235,15 +247,21 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
+        box-shadow: 0 4px 12px rgba(29, 88, 242, 0.2);
       }
+
       .footer-trust {
         text-align: center;
         color: var(--ink-soft);
         font-size: 11px;
         margin-top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
       }
 
-      /* SUCCESS */
+      /* Success View */
       .success-view {
         display: none;
         padding: 40px 20px;
@@ -251,6 +269,26 @@
       }
       .success-view.visible {
         display: block;
+      }
+
+      /* Correction iPhone 4/5 (hauteur réduite) */
+      @media (max-height: 580px) {
+        .panel-header {
+          padding: 16px 20px 10px;
+        }
+        .panel-header h2 {
+          font-size: 22px;
+        }
+        .field {
+          margin-bottom: 8px;
+        }
+        .field input,
+        .field select {
+          height: 40px;
+        }
+        .btn-submit {
+          height: 46px;
+        }
       }
     </style>
   </head>
@@ -337,9 +375,11 @@
       const panel = document.getElementById("panel");
       const form = document.getElementById("lead-form");
 
+      // Tes essentiels : Interactivité Toggle
       document.getElementById("fab").onclick = () =>
         panel.classList.toggle("open");
 
+      // Tes essentiels : Simulation d'envoi
       form.onsubmit = async (e) => {
         e.preventDefault();
         let isValid = true;
@@ -348,13 +388,18 @@
           if (!input.value.trim()) {
             f.classList.add("has-error");
             isValid = false;
-          } else f.classList.remove("has-error");
+          } else {
+            f.classList.remove("has-error");
+          }
         });
 
         if (!isValid) return;
+
         const btn = document.getElementById("btn-submit");
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
+
         await new Promise((r) => setTimeout(r, 1000));
+
         form.style.display = "none";
         document.getElementById("success-view").classList.add("visible");
       };
