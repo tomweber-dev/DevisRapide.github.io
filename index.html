@@ -829,24 +829,27 @@
           const keyboardHeight = windowHeight - viewportHeight;
 
           if (keyboardHeight > 60) {
-            // Au lieu de monter tout le bloc, on le "tasse" entre le titre et le clavier
             panel.classList.add("keyboard-up");
-            panel.style.transform = "translateY(0)"; // On annule le mouvement vers le haut
+            panel.style.transform = "translateY(0)";
+
+            // On retire le padding-bottom pour coller au clavier
+            panel.style.paddingBottom = "0px";
             panel.style.bottom = `${keyboardHeight}px`;
             panel.style.maxHeight = `${viewportHeight}px`;
 
-            // On centre l'input actif pour qu'il soit bien visible
+            // On utilise 'end' au lieu de 'center' pour coller l'input au clavier
             setTimeout(() => {
               if (document.activeElement) {
                 document.activeElement.scrollIntoView({
                   behavior: "smooth",
-                  block: "center",
+                  block: "end",
                 });
               }
-            }, 150);
+            }, 100);
           } else {
-            // Reset quand le clavier se ferme
+            // Reset aux valeurs d'origine
             panel.style.bottom = "0";
+            panel.style.paddingBottom = "var(--sab)";
             panel.style.maxHeight = "92dvh";
             panel.classList.remove("keyboard-up");
           }
