@@ -40,9 +40,10 @@
         font-family: "DM Sans", sans-serif;
         background: #f3f4f8;
         min-height: 100vh;
+        overflow: hidden;
       }
 
-      /* ── ARRIÈRE-PLAN DÉMO ── */
+      /* ── DÉMO ── */
       .demo-bg {
         position: fixed;
         inset: 0;
@@ -51,11 +52,12 @@
       }
       .demo-label {
         position: absolute;
-        top: 50%;
+        top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
         width: 100%;
+        padding: 20px;
       }
       .demo-label span {
         display: block;
@@ -75,10 +77,10 @@
       /* ── FAB ── */
       #fab {
         position: fixed;
-        bottom: calc(24px + var(--sab));
-        right: 24px;
-        width: 60px;
-        height: 60px;
+        bottom: calc(20px + var(--sab));
+        right: 20px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
         background: var(--ink);
         border: none;
@@ -90,22 +92,22 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
       }
 
-      /* ── PANEL "FLOATING CARD" ── */
+      /* ── PANEL COMPACT ── */
       #panel {
         position: fixed;
-        bottom: calc(100px + var(--sab));
-        right: 24px;
-        width: 370px;
+        bottom: calc(85px + var(--sab));
+        right: 20px;
+        width: 360px;
         max-width: calc(100vw - 40px);
         background: var(--surface);
         border-radius: var(--radius);
-        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
         z-index: 999;
         display: flex;
         flex-direction: column;
         overflow: hidden;
         opacity: 0;
-        transform: translateY(20px) scale(0.95);
+        transform: translateY(15px) scale(0.95);
         pointer-events: none;
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         transform-origin: bottom right;
@@ -116,10 +118,10 @@
         pointer-events: all;
       }
 
-      /* Header avec les ronds et badge */
+      /* Header Optimisé (Plus fin) */
       .panel-header {
         background: var(--ink);
-        padding: 32px 24px 24px;
+        padding: 24px 20px 18px;
         color: #fff;
         position: relative;
         overflow: hidden;
@@ -133,91 +135,90 @@
         opacity: 0.12;
       }
       .panel-header::before {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
         background: var(--accent);
-        top: -40px;
-        right: -30px;
+        top: -30px;
+        right: -20px;
       }
       .panel-header::after {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         background: #fff;
-        bottom: -30px;
-        left: 20px;
+        bottom: -25px;
+        left: 15px;
       }
 
       .badge {
         display: inline-flex;
         align-items: center;
         background: rgba(255, 255, 255, 0.08);
-        padding: 5px 12px;
+        padding: 4px 10px;
         border-radius: 20px;
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 16px;
+        letter-spacing: 0.8px;
+        margin-bottom: 12px;
         border: 1px solid rgba(255, 255, 255, 0.1);
         position: relative;
         z-index: 1;
       }
       .badge i {
         color: #22c55e;
-        margin-right: 6px;
-        font-size: 8px;
+        margin-right: 5px;
+        font-size: 7px;
       }
 
       .panel-header h2 {
         font-family: "Instrument Serif", serif;
-        font-size: 32px;
-        line-height: 1;
+        font-size: 28px;
+        line-height: 1.1;
         font-weight: 400;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         position: relative;
         z-index: 1;
       }
       .panel-header p {
-        font-size: 14px;
+        font-size: 13px;
         color: var(--ink-soft);
         position: relative;
         z-index: 1;
       }
 
-      /* Corps du formulaire */
+      /* Formulaire resserré */
       .panel-scrollable {
         overflow-y: auto;
         flex: 1;
         -webkit-overflow-scrolling: touch;
-        max-height: 65vh;
+        max-height: 70vh;
       }
       .panel-body {
-        padding: 24px;
+        padding: 20px;
       }
 
       .field {
-        margin-bottom: 18px;
+        margin-bottom: 14px;
       }
       .field label {
         display: block;
         font-size: 10px;
         font-weight: 700;
         color: var(--ink-soft);
-        margin-bottom: 6px;
+        margin-bottom: 5px;
         letter-spacing: 0.5px;
       }
       .field input,
       .field select {
         width: 100%;
-        height: 54px;
-        padding: 0 16px;
+        height: 48px;
+        padding: 0 14px;
         border: 1px solid var(--border);
-        border-radius: 14px;
-        font-size: 16px;
+        border-radius: 12px;
+        font-size: 15px;
         font-family: inherit;
         background: #fafbfc;
         outline: none;
-        transition: 0.2s;
       }
       .field input:focus {
         border-color: var(--accent);
@@ -228,44 +229,43 @@
         background: #fffcfc;
       }
 
-      /* Bouton avec icône avion */
+      /* Bouton */
       .btn-submit {
         width: 100%;
-        height: 58px;
+        height: 54px;
         background: var(--accent);
         color: #fff;
         border: none;
-        border-radius: 14px;
+        border-radius: 12px;
         font-weight: 700;
-        font-size: 16px;
+        font-size: 15px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        box-shadow: 0 6px 16px rgba(29, 88, 242, 0.2);
-        margin-top: 8px;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(29, 88, 242, 0.2);
+        margin-top: 5px;
       }
       .btn-submit i {
         transform: rotate(-15deg);
-        font-size: 18px;
+        font-size: 16px;
       }
 
-      /* Footer réassurance */
       .footer-trust {
         text-align: center;
         color: var(--ink-soft);
-        font-size: 12px;
-        margin-top: 20px;
+        font-size: 11px;
+        margin-top: 15px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 5px;
       }
 
       .success-view {
         display: none;
-        padding: 50px 20px;
+        padding: 40px 20px;
         text-align: center;
       }
       .success-view.visible {
@@ -282,8 +282,8 @@
 
     <button id="fab">
       <svg
-        width="24"
-        height="24"
+        width="22"
+        height="22"
         viewBox="0 0 24 24"
         fill="none"
         stroke="white"
@@ -331,8 +331,7 @@
             </button>
 
             <div class="footer-trust">
-              <i class="fa-solid fa-lock"></i> Données sécurisées — jamais
-              revendues
+              <i class="fa-solid fa-lock"></i> Données sécurisées
             </div>
           </div>
         </form>
@@ -340,18 +339,18 @@
         <div class="success-view" id="success-view">
           <i
             class="fa-solid fa-circle-check"
-            style="color: #22c55e; font-size: 40px; margin-bottom: 16px"
+            style="color: #22c55e; font-size: 32px; margin-bottom: 12px"
           ></i>
           <h3
             style="
               font-family: &quot;Instrument Serif&quot;, serif;
-              font-size: 32px;
+              font-size: 26px;
             "
           >
             Merci !
           </h3>
-          <p style="margin-top: 10px; color: var(--ink-soft)">
-            Un conseiller vous rappelle d'ici 2 min.
+          <p style="margin-top: 5px; color: var(--ink-soft); font-size: 14px">
+            On vous rappelle d'ici 2 min.
           </p>
         </div>
       </div>
@@ -379,30 +378,24 @@
         });
 
         if (!isValid) return;
-
         const btn = document.getElementById("btn-submit");
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
-
-        await new Promise((r) => setTimeout(r, 1200));
+        await new Promise((r) => setTimeout(r, 1000));
         form.style.display = "none";
         document.getElementById("success-view").classList.add("visible");
       };
 
-      // Fix clavier intelligent
       if (window.visualViewport) {
         window.visualViewport.onresize = () => {
           if (!panel.classList.contains("open")) return;
           const isUp = window.innerHeight - window.visualViewport.height > 60;
-          scrollable.style.paddingBottom = isUp ? "60vh" : "0";
+          scrollable.style.paddingBottom = isUp ? "50vh" : "0";
           if (isUp)
-            setTimeout(
-              () =>
-                document.activeElement?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center",
-                }),
-              50,
-            );
+            setTimeout(() => {
+              document
+                .getElementById("btn-submit")
+                .scrollIntoView({ behavior: "smooth", block: "end" });
+            }, 50);
         };
       }
     </script>
