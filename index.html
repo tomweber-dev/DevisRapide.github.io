@@ -229,13 +229,15 @@
           left: 0;
           width: 100%;
           border-radius: 20px 20px 0 0;
+          /* On change ceci pour laisser le JS gérer la hauteur */
+          height: auto;
           max-height: 92dvh;
           transform: translateY(100%);
           opacity: 1;
-          display: flex; /* AJOUTÉ */
-          flex-direction: column; /* AJOUTÉ */
-          padding-bottom: var(--sab);
-          transition: transform 0.38s cubic-bezier(0.32, 1, 0.46, 1);
+          display: flex;
+          flex-direction: column;
+          /* On enlève les transitions sur transform quand le clavier est là */
+          transition: transform 0.3s ease-out;
         }
         #panel.open {
           transform: translateY(0);
@@ -821,41 +823,43 @@
 
       // ── Visual Viewport — avoid keyboard overlap ───────
       if (window.visualViewport) {
+        const scrollable = panel.querySelector(".panel-scrollable");
+
         window.visualViewport.addEventListener("resize", () => {
           if (!isMobile() || !panel.classList.contains("open")) return;
 
-          const viewportHeight = window.visualViewport.height;
-          const windowHeight = window.innerHeight;
-          const keyboardHeight = windowHeight - viewportHeight;
-          const scrollContainer = panel.querySelector(".panel-scrollable");
+          const vh = window.visualViewport.height;
+          const fullHeight = window.innerHeight;
+          const keyboardHeight = fullHeight - vh;
 
           if (keyboardHeight > 60) {
-            panel.classList.add("keyboard-up");
+            // 1. On fige le panel en position haute sans transition pour éviter les bugs
+            panel.style.transition = "none";
             panel.style.transform = "translateY(0)";
+
+            // 2. On réduit la hauteur totale du panel pour qu'il s'arrête pile au clavier
+            panel.style.height = `${vh}px`;
             panel.style.bottom = `${keyboardHeight}px`;
-            panel.style.maxHeight = `${viewportHeight}px`;
-            panel.style.paddingBottom = "0px";
 
-            // Ajoute un espace en bas du formulaire pour permettre de scroller le 2ème input
-            // On crée un padding interne à la zone scrollable
-            scrollContainer.style.paddingBottom = "200px";
+            // 3. On ajoute un énorme espace en bas du formulaire pour libérer le scroll
+            scrollable.style.paddingBottom = "50vh";
 
+            // 4. On force le scroll vers l'élément actif
             setTimeout(() => {
               if (document.activeElement) {
-                // 'center' est plus fiable ici pour forcer le scroll avec le padding ajouté
                 document.activeElement.scrollIntoView({
                   behavior: "smooth",
                   block: "center",
                 });
               }
-            }, 150);
+            }, 100);
           } else {
-            // Reset complet
-            panel.style.bottom = "0";
+            // Reset quand le clavier se ferme
+            panel.style.transition = "transform 0.3s ease-out";
+            panel.style.height = "auto";
             panel.style.maxHeight = "92dvh";
-            panel.style.paddingBottom = "var(--sab)";
-            scrollContainer.style.paddingBottom = "0px";
-            panel.classList.remove("keyboard-up");
+            panel.style.bottom = "0";
+            scrollable.style.paddingBottom = "0";
           }
         });
       }
